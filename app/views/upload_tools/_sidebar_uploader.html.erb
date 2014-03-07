@@ -1,0 +1,75 @@
+<%= stylesheet_link_tag "swfupload" %>
+<%= javascript_include_tag("swfupload") %>
+
+<!--<div class="fieldset flash" id="fsUploadProgress">
+<div id="divStatus" class="show_none"></div>
+<span id="spanButtonPlaceHolder"></span>
+<input id="btnCancel" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="margin-left: 2px; font-size: 8pt; height: 29px;" class="show_none" />
+</div>
+-->
+
+<span id="spanButtonPlaceHolder"></span>
+<input id="btnCancel" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="margin-left: 2px; font-size: 8pt; height: 29px; visibility: collapse;" class="show_none" />
+
+<div id="allimgheight1">
+    <div id="thumbnails"></div>
+    <div id="fsUploadProgress"></div>
+</div>
+
+<% key = Rails.application.config.session_options[:key] %>
+<script type="text/javascript">
+  var swfu;
+  function swfuploader() {
+    var settings = {
+              flash_url : "/assets/swfupload/swfupload.swf", //存放swf的路徑
+              upload_url: "<%= upload_tools_path %>", // 上傳檔案的路徑
+              post_params: {
+                "<%= key %>" : "<%= cookies[key] %>",
+                "<%= request_forgery_protection_token %>" : "<%= form_authenticity_token %>",
+                "_http_accept" : "application/javascript",// 安全性設定
+                "option" : "<%= option.to_json %>",
+                "table_params" : "<%= table_params.to_json %>"
+              },//跟随上传文件一起的附带参数<'paramsName','paramsValue'> 
+              http_success : [ 200, 201, 204 ],       // FOR AWS
+
+              file_size_limit : "5 MB",
+              file_types : "*.jpeg; *.jpg; *.png; *.gif",
+              file_types_description : "JPG Images",
+              file_upload_limit : <%= table_params[:categorized]==1 ? 1 : 10 %>,
+              file_queue_limit : 0,
+              file_post_name : "file",                // FOR AWS
+
+              custom_settings : {
+                  progressTarget : "fsUploadProgress",
+                  cancelButtonId : "btnCancel"
+              },
+              debug: <%= ENV['RAILS_ENV']=='development' ? 'true' : 'false' %>, // 如果是正式環境, 就是false
+              
+              // Button settings // 初始化swf文件
+              button_action : SWFUpload.BUTTON_ACTION.SELECT_FILES,
+              button_image_url : "/assets/swfupload/x.png",
+              button_placeholder_id : "spanButtonPlaceHolder", //指定上傳圖片的id名稱
+              button_width: 80,
+              button_height: 25,
+              
+              // The event handler functions are defined in handlers.js
+              file_queued_handler : fileQueued,
+              file_queue_error_handler : fileQueueError,
+              file_dialog_complete_handler : fileDialogComplete,
+              upload_start_handler : uploadStart,
+              upload_progress_handler : uploadProgress,
+              upload_error_handler : uploadError,
+              upload_success_handler : uploadSuccess,
+              upload_complete_handler : uploadComplete,
+              queue_complete_handler : queueComplete // Queue plugin event
+          };
+          
+    swfu = new SWFUpload(settings);
+  }
+  window.onload = swfuploader;
+</script>
+
+
+
+
+

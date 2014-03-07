@@ -1,0 +1,79 @@
+<%= stylesheet_link_tag "swfupload" %>
+
+<!--<div class="fieldset flash" id="fsUploadProgress">
+<div id="divStatus" class="show_none"></div>
+<span id="spanButtonPlaceHolder"></span>
+<input id="btnCancel" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="margin-left: 2px; font-size: 8pt; height: 29px;" class="show_none" />
+</div>
+-->
+    <span id="spanButtonPlaceHolderOriginal"></span>
+<input id="btnCancelOriginal" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="margin-left: 2px; font-size: 8pt; height: 29px; visibility: collapse;" class="show_none" />
+
+<div id="allimgheight1">
+    <div id="thumbnailsOriginal"></div>
+    <div id="fsUploadProgressOriginal"></div>
+</div>
+
+<% content_for(:javascript) do %>
+  <% key = Rails.application.config.session_options[:key] %>
+  <%= javascript_include_tag("swfupload") %>
+  <script type="text/javascript">
+  // 如果圖片上傳完成後要重整頁面
+  // 只要在該頁html.erb中種入<div id="sogi_swf_reload"></div>即可。
+
+  // 請將變數名稱設為@resource，讓uploader可取得model與id
+
+  // 圖片上傳完成或失敗後的頁面改變，是透過handlers.js運作
+  // 針對不同頁面作出不同改變，目前想法是透過種html tag id 來判斷
+
+      var swfuOriginal;
+      $(window).load(function() {
+          var settingsOriginal = {
+              flash_url : "/assets/swfupload/swfupload.swf", //存放swf的路徑
+              upload_url: "<%= upload_tools_path %>", // 上傳檔案的路徑
+              post_params: {
+                "<%= key %>" : "<%= cookies[key] %>",
+                "<%= request_forgery_protection_token %>" : "<%= form_authenticity_token %>",
+                "_http_accept" : "application/javascript",// 安全性設定
+                "option" : "<%= option.to_json %>",
+                "table_params" : "<%= table_params.to_json %>"
+              },//跟随上传文件一起的附带参数<'paramsName','paramsValue'> 
+              http_success : [ 200, 201, 204 ],       // FOR AWS
+
+              file_size_limit : "5 MB",
+              file_types : "*.jpeg; *.jpg; *.png; *.gif",
+              file_types_description : "JPG Images",
+              file_upload_limit : 999,
+              file_queue_limit : 0,
+              file_post_name : "file",                // FOR AWS
+
+              custom_settings : {
+                  progressTarget : "fsUploadProgressOriginal",
+                  cancelButtonId : "btnCancelOriginal"
+              },
+              debug: <%= ENV['RAILS_ENV']=='development' ? 'true' : 'false' %>, // 如果是正式環境, 就是false
+           
+              // Button settings // 初始化swf文件
+              button_action : SWFUpload.BUTTON_ACTION.SELECT_FILES,
+              button_image_url : "/assets/swfupload/x.png",
+              button_placeholder_id : "spanButtonPlaceHolderOriginal", //指定上傳圖片的id名稱
+              button_width: 80,
+              button_height: 25,
+
+              // The event handler functions are defined in handlers.js
+              file_queued_handler : fileQueued,
+              file_queue_error_handler : fileQueueError,
+              file_dialog_complete_handler : fileDialogComplete,
+              upload_start_handler : uploadStart,
+              upload_progress_handler : uploadProgress,
+              upload_error_handler : uploadError,
+              upload_success_handler : uploadSuccessOriginal,
+              upload_complete_handler : uploadComplete,
+              queue_complete_handler : queueComplete // Queue plugin event
+
+          };
+
+          swfuOriginal = new SWFUpload(settingsOriginal);
+       });
+  </script>
+<% end %>

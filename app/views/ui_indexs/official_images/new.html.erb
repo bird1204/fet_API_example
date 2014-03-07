@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+  <title>遠傳管理後台-修改產品資訊</title>
+</head>
+<body>
+  <center>
+      <%if params[:image_type] == "official"%>
+        官圖
+        <%=hidden_field_tag :image_type,"official"%>
+      <%else%>
+        寫真圖
+        <%=hidden_field_tag :image_type,"product"%>
+      <%end%>
+      <div id="addpic">
+        <!--(新增)寫真圖片用-->
+        <table cellpadding="4" cellspacing="1" width="50%">
+          <tr class="title">
+            <td>產品寫真管理</td>
+          </tr>
+          <tr class="even">
+            <%= render :partial => "upload_tools/sidebar_uploader", :locals => {:option => {:resource_type => @product.class.to_s, :resource_id => @product.id}, :table_params => { :categorized => @categorized } } %>
+          </tr>
+          <tr class="odd">
+            <td>
+              1.上傳的原圖格式,請以640*480大小上傳。<br />
+              2.檔案大小不可以超過 150KB。<br />
+              3.檔案的副檔名為 jpg檔 。<br />
+            </td>
+          </tr>
+        </table>
+        <br />
+      </div>
+    <span id="deltext"></span>
+    <table>
+      <td><%= button_to t('activerecord.back_to_index'),ui_indexs_mains_path, :method =>:get  %></td>
+      <td><%= button_to t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product_type), :method =>:put  %></td>
+    </table>
+  </center> 
+  <div id="back_page">
+</body>
+</html>
+
+

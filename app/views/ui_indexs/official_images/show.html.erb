@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>
+    遠傳管理後台-修改產品資訊
+  </title>
+  <script language="Javascript">
+    function SetCheckBoxListChecked(checkBoxID,true_or_false){
+      var row=<%=@image_urls.count%>;
+      //table 有幾列就跑幾次
+      for(i=0;i<row;i++){
+        var id = "#CheckBoxList1_"+i;
+        $(id).prop("checked", true_or_false)
+      }
+    }
+    function showBigImage(url){
+      $("#bigImage").attr("src",url);
+    }
+    function checkURLStaus(){
+      var urlStr=$("#image_1").attr("alt");
+      $("#msgBox").html("<br><b><font color='green'>YA!!!!沒有需要處理的檔案~~~~</font></b><br");
+      for(i=0 ; i<=urlStr.length;i++){
+        if(haveChinese(urlStr)){
+          $("#msgBox").html("<br><b><font color='red'>有中文檔名，需要處理喔!!!</font></b><br>");
+          break;
+        }
+      }    
+    }
+    function haveChinese(s) { return s.search(RegExp("[一-"+String.fromCharCode(40869)+"]"))>-1;}
+    function uploading() {$("#msgBox").html("<br><b><font color='brown'>正在上傳檔案....</font></b><br");}
+  </script>
+</head>
+<body onload="checkURLStaus()">
+  <%= form_tag(new_ui_indexs_official_image_path(params[:id]), :method =>:get) do -%>
+    <center>
+      <%if params[:image_type] == "official"%>
+        官圖
+        <div id="msgBox"/></div>
+        <%=hidden_field_tag :image_type,"official"%>
+      <%else%>
+        寫真圖
+        <%=hidden_field_tag :image_type,"product"%>
+      <%end%>
+      <div>
+        <div id="showpic">
+            <!--若有寫真圖片則以CheckBoxList(刪除可以使用)-->
+            <table id="CheckBoxList1" border="0">
+              <tr>
+              <%@image_urls.each_with_index do |url,i|%>  
+                <td>
+                  <%=check_box_tag("CheckBoxList1_#{i}", value = "1", checked = false)%>
+                  <label for=<%="CheckBoxList1_#{i}"%>>
+                    <%=image_tag("#{url.url_thumb}",:id => "image_#{i}" , :onclick => "showBigImage('#{url.url_big}');")%>
+                  </label>
+                  <%if (i+1)%8 == 0 %><tr></tr><%end%>
+                </td>
+              <%end%>
+              </tr>
+            </table>
+            <table>
+              <tr>
+                <td><%=submit_tag("刪除圖片")%></td>
+                <td><%=submit_tag("新增圖片")%></td>
+                <td><input type="button" value="全選" onclick="SetCheckBoxListChecked('CheckBoxList1',true)"></td>
+                <td><input type="button" value="全部取消" onclick="SetCheckBoxListChecked('CheckBoxList1',false)"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      <span id="deltext"></span>
+      <table>
+        <td><%= button_to t('activerecord.back_to_index'),ui_indexs_mains_path, :method =>:get  %></td>
+        <td><%= button_to t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product_type), :method =>:put  %></td>
+        <td><%= button_to "中文圖片處理",upload_ui_indexs_official_images_path(@id),:onclick=>"uploading();" ,:method =>:get  %></td>
+        <td>(因圖片需要重新上傳，每張約20秒，請耐心等候，請耐心等候～)</td>
+      </table>
+    <img id="bigImage"/>
+    </center> 
+  <%end-%>        
+</body>
+</html>
+
+

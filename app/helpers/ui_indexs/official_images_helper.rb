@@ -1,0 +1,2 @@
+module UiIndexs::OfficialImagesHelper
+end

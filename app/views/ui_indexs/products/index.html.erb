@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+  <title><%=t("label.fet_manegement")%></title>
+</head>
+  <body>
+    <center>
+      <div>
+        <table>
+          <%= form_tag(search_ui_indexs_products_path, :method => :get, :class => :form) do %>
+          <td><%=t("label.product_no")%><%= text_field_tag :product_id, params[:product_id] %></td>
+          <td><%=t("label.name")%><%= text_field_tag :product_keyword, params[:product_keyword] %></td>
+          <td><%=t("label.brand")%><%= text_field_tag :brand_keyword, params[:brand_keyword] %></td>
+          <td><%=t("label.type")%><%= select_tag(:product_type,options_for_select(@types,params[:product_type].to_i))%></td>
+          <td><%= submit_tag "search", :class => "button" %></td>
+          <% end %>
+          <td><%= button_to t('activerecord.back_to_index'), ui_indexs_mains_path, :method =>:get  %></td>
+          <%= form_tag(new_ui_indexs_product_path,:method=>:get) do -%>
+          <td>
+            <%= submit_tag t("label.add_NB") if params[:product_type].to_i==3%>
+            <%= submit_tag t("label.add_NIC") if params[:product_type].to_i==4%>
+          </td>
+          <%end-%>
+        </table>
+        <div>
+          <table cellspacing="0" cellpadding="4" border="0" id="GridView1" style="color:#333333;border-collapse:collapse;">
+            <tr style="color:White;background-color:#5D7B9D;font-weight:bold;">
+              <th scope="col" style="font-size:12px;">ID</th>
+              <th scope="col" style="font-size:12px;width:130px;"><%=t("label.product_no")%></th>
+              <th scope="col" style="font-size:12px;width:180px;"><%=t("label.name")%></th>
+              <th scope="col" style="font-size:12px;width:150px;"><%=t("label.brand")%></th>
+              <th scope="col" style="font-size:12px;width:150px;"><%=t("label.gems")%></th>
+              <th scope="col" style="font-size:12px;width:100px;"><%=t("label.market_date")%></th>
+              <th scope="col" style="font-size:12px;"><%=t("label.lateset_update")%></th>
+              <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
+              <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
+              <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
+              <th scope="col" style="font-size:11pt;width:80px;">&nbsp;</th>
+            </tr>
+            <% @products.each do |product| %>
+            <tr style="color:#333333;background-color:#F7F6F3;">
+              <td align="center" style="font-size:12px;"><%=product.id%></td>
+              <td align="center" style="font-size:12px;"><%=product.product_id%></td>
+              <td align="center" style="font-size:12px;"><%=product.name%></td>
+              <td align="center" style="font-size:12px;"><%=@brand_list[product.brand_id]%></td>
+              <td align="center" style="font-size:12px;"><%=(product.reviews.present?)? product.reviews : 0%></td>
+              <td align="center" style="font-size:12px;"><%=product.market_date%></td>
+              <td align="center" style="font-size:12px;"><%=product.updated_at.in_time_zone('Taipei')%></td>
+              <td><%= button_to t("activerecord.modify_intro"), edit_ui_indexs_product_path(product.id), :method => :get %></td>
+              <td><%= button_to t("activerecord.modify_spec"), edit_ui_indexs_spec_path(product.id), :method => :get %></td>
+              <td>
+                <%= link_to "<button>#{t("activerecord.product_img")}</button>".html_safe,
+                            ui_indexs_official_image_path(product.id,:image_type=>"product") %>
+              </td>
+              <td>
+                <%= link_to "<button>#{t("activerecord.official_img")}</button>".html_safe,
+                            ui_indexs_official_image_path(product.id,:image_type=>"official") %>
+              </td>
+              <td><%= button_to t("activerecord.product_icon"), ui_indexs_product_image_path(product.id), :method => :get %></td>
+              <td><%= button_to t("activerecord.spec_img"), edit_ui_indexs_feature_path(product.id), :method => :get  %></td>
+              <td>
+                <%if product.updated_at.to_date != @today%>
+                  <%= button_to "放入隔日XML檔", ui_indexs_product_put_in_next_XML_path(product), :method => :put , :disabled => false %>
+                <%else%>
+                  <%= button_to "符合匯出條件", ui_indexs_product_put_in_next_XML_path(product), :method => :put , :disabled => true %>
+                <%end%>
+              </td>
+            </tr>
+            <%end%>
+          </table>
+          <%= will_paginate @products %>
+        </div>
+      </div>
+    </center>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+module UiIndexs::FeaturesHelper
+end

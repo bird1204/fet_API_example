@@ -1,0 +1,61 @@
+<%=t("label.name")%>:  <%=@product.name%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title></title>
+</head>
+<body><br />
+  <span id="Label1" style="color:Red;"><%=t("label.feature_note")%></span>
+  <br />
+  <span id="Label2" style="color:Red;"><%=t("label.feature_note_2")%></span>
+  <br />
+  <br />
+  <div>
+    <table cellspacing="0" cellpadding="5" border="0" id="GridView1" style="width:98%;border-collapse:collapse;">
+      <tr class="title" style="font-weight:bold;">
+        <th scope="col"><%=t("label.sogi_no")%></th>
+        <th scope="col"><%=t("label.product_no")%></th>
+        <th scope="col">OS</th>
+        <th scope="col"><%=t("label.dual_core")%></th>
+        <th scope="col">3.5G</th>
+        <th scope="col">WiFi</th>
+        <th scope="col">GPS</th>
+        <th scope="col">FM Radio</th>
+        <th scope="col">MP3</th>
+        <th scope="col">HDMI</th>
+        <th scope="col">FULL HD</th>
+        <th scope="col">NFC</th>
+        <th scope="col"><%=t("label.dual_camera")%></th>
+        <th scope="col">EAP-SIM</th>
+        <th scope="col">4G</th>
+      </tr>
+      <%=form_for @feature, :url => ui_indexs_feature_path, :html => { :class => :form }  do |f| %>
+      <tr class="odd" align="center">
+        <td><%=f.label :product_id , @product.product_id  %></td>
+        <td><%=@feature.product_id%></td>
+        <td><%=f.label :os , @feature.os%></td>
+        <td><%=f.check_box :features1 %></td>
+        <td><%=f.check_box :features2 %></td>
+        <td><%=f.check_box :features3 %></td>
+        <td><%=f.check_box :features4 %></td>
+        <td><%=f.check_box :features5 %></td>
+        <td><%=f.check_box :features6 %></td>
+        <td><%=f.check_box :features7 %></td>
+        <td><%=f.check_box :features8 %></td>
+        <td><%=f.check_box :features9 %></td>
+        <td><%=f.check_box :features10 %></td>
+        <td><%=f.check_box :features11 %></td>
+        <td><%=f.check_box :features12 %></td>
+      </tr>
+    </table>
+  </div>
+  <br />
+  <%=f.submit t("activerecord.update")%> 
+  <%end%> 
+  <br /><br />
+  <table>
+    <td><%= button_to t('activerecord.back_to_index'),ui_indexs_mains_path, :method =>:get  %></td>
+    <td><%= button_to t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product.product_type), :method =>:put  %></td>
+  </table>
+</body>
+</html>

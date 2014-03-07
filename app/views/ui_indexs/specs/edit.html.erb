@@ -1,0 +1,51 @@
+<%=t("label.name")%><%=@product.name%><br>
+<font style="color: #F00;font-size: 18px;font-weight: bold;"><%=t("label.spec_note")%></font>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+  <title><%=t("label.fet_manegement")%></title>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>
+        <%= form_tag(ui_indexs_spec_path,:method=>"put") do -%>
+        <div>
+          <table cellspacing="0" cellpadding="4" rules="cols" border="1" style="color:Black;background-color:White;border-color:#DEDFDE;border-width:1px;border-style:None;border-collapse:collapse;">
+            <tr style="color:White;background-color:#6B696B;font-weight:bold;">
+              <th scope="col">spec_display_id</th>
+              <th scope="col">product_id</th>
+              <th scope="col">spec_class_name</th>
+              <th scope="col">spec_name</th>
+              <th scope="col">spec_display_name</th>
+              <th scope="col" style="width:300px;"><%=t("label.example")%></th>
+            </tr>
+            <% @display_array.each_with_index do |display,index| -%>
+            <tr style="background-color:White;" align=center>
+              <td><%=display[:display_id]%></td>
+              <td><%=display[:product_id]%></td>
+              <td><%=display[:spec_class_name]%></td>
+              <td><%=display[:spec_name]%></td>
+              <td><%= text_field_tag "#{display[:display_id]}",display[:display_name],size: 50%></td>
+              <td><%=display[:remark]%></td>
+            </tr>
+            <%end-%>
+          </table>   
+        </div> 
+        <table>
+          <td><%=button_tag("確認")%></td>
+        </table>
+        <%-end-%>
+      </td>
+      <td>
+      </td>
+    </tr>
+  </table>
+  <table>
+    <td><%= button_to t('activerecord.back_to_index'),ui_indexs_mains_path, :method =>:get  %></td>
+    <td><%= button_to t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product.product_type), :method =>:put  %></td>
+  </table>
+</body>
+</html>
+
+

@@ -1,0 +1,26 @@
+<%= javascript_include_tag "ckeditor_initialization" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+  <title><%=t("label.fet_manegement")%></title>
+</head>
+<body>
+  <center>
+    <div>
+      <table>
+        <tr>
+          <td>
+          <%= form_for @product, :url => ui_indexs_product_path(@product), :html => { :class => :form } do |f| -%>
+            <%= render :partial => "form", :locals => {:f => f} %>
+          <%end%>
+            <%= button_to  t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product_type), :method =>:put %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </center>  
+</body>
+</html>
+
+

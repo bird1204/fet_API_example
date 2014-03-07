@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head id="Head1">
+    <title><%=t("label.fet_trans")%></title>
+  </head>
+  <body>
+      <center>
+        <div>
+          <table>
+            <tr><td><font style="color: #F00;font-size: 18px;font-weight: bold;"><%=t("label.trans_note")%></font></td></tr>
+            <tr><td><%=t("label.trans_note_2")%></td></tr>
+            <tr><td><%=t("label.trans_note_3")%></td></tr>
+            <tr><td><%=t("label.trans_note_4")%></td></tr>
+            <tr><td><%=t("label.trans_note_5")%></td></tr>
+            <tr><td><%=t("label.trans_note_6")%></td></tr>
+          </table>     
+          <%= form_tag(:method=>:get) do -%>
+          <table>
+            <tr>
+              <%=t("label.sogi")%><%=t("label.product_no")%>: <%= text_field_tag :product_id %><br />
+            </tr>
+            <tr>
+              <td><%= button_tag "匯入產品資料", :onclick => "import_info();",:type => "button" %></td>
+              <td><%= button_tag "匯入產品規格", :onclick => "import_spec();",:type => "button" %></td>
+              <td><%= button_tag t("activerecord.import_image") ,:onclick => "import_pic();",:type => "button"%></td>
+            </tr>
+            <tr>
+              <td><%= button_tag t("activerecord.update_product") ,:onclick => "update_info();",:type => "button"%></td>
+              <td><%= button_tag "更新產品規格" ,:onclick => "update_spec();",:type => "button"%></td>
+              <td><%= button_tag t("activerecord.update_image") ,:onclick => "update_pic();",:type => "button"%></td>
+            </tr>
+          <% end -%>
+            <tr>
+              <td><%= button_tag t("activerecord.import_spec_and_spec_class"),:onclick => "sync();"  ,:type => "button"%></td>
+              <td><%= button_tag "匯入所有圖片",:onclick => "import_all_image();"  ,:type => "button"%></td>
+              <td><%= button_tag "匯入所有產品",:onclick => "import_all_product();"  ,:type => "button"%></td>
+            </tr>
+          </table> 
+          <%= button_to t("activerecord.back_to_index"), products_path %>
+        </div>
+      </center>
+
+  </body>
+</html>
+<script type="text/javascript">
+  function check_present(product_id){
+    if(product_id != null && product_id != ""){
+      return true
+    }else{
+      alert("<%=t('label.error_message')%>");
+      return false;
+    }
+  }
+  
+  function import_all_product(){
+    url = "<%= import_all_product_products_path %>";
+    jQuery.get(url, function() {alert( "匯入所有產品已完成" );});
+  }
+
+
+  function import_all_image(){
+    url = "<%= import_all_image_products_path %>";
+    jQuery.get(url, function() {alert( "匯入所有圖片已完成" );});
+  }
+
+  function sync(){
+    url = "<%= sync_products_path %>";
+    jQuery.get(url, function() {alert( "匯入規格已完成" );});
+  }
+
+  function import_info(){
+    var product_id=jQuery('#product_id')
+    if (self.check_present(product_id.val())){
+      url = "<%= import_info_products_path %>";
+
+      jQuery.get(url, product_id.serialize(), function(){alert( "匯入資料已完成" );})
+                                              .error(function() {alert("已經匯過囉~~~");});
+    }
+  }
+
+  function import_spec(){
+    var product_id=jQuery('#product_id')
+    if (self.check_present(product_id.val())){
+      url = "<%= import_spec_products_path %>";
+      jQuery.get(url, product_id.serialize(), function() {alert( "匯入產品規格已完成" );});
+    }
+  }
+
+  function import_pic(){
+    var product_id=jQuery('#product_id')
+    if (check_present(product_id.val())){
+      url = "<%= import_pic_products_path %>";
+      jQuery.get( url,product_id.serialize(), function() {alert( "匯入圖片已完成" );});
+    }
+  }
+
+  function update_info(){
+    var product_id=jQuery('#product_id')
+    if (check_present(product_id.val())){
+      url = "<%= update_info_products_path %>";
+      jQuery.get(url, product_id.serialize(), function() {alert( "更新產品資料已完成" );});
+    }
+  }
+
+  function update_pic(){
+    var product_id=jQuery('#product_id')
+    if (check_present(product_id.val())){
+      url = "<%= update_pic_products_path %>";
+      jQuery.get(url, product_id.serialize(), function() {alert( "更新圖片已完成" );});
+    }
+  }
+
+  function update_spec(){
+    var product_id=jQuery('#product_id')
+    if (check_present(product_id.val())){
+      url = "<%= update_spec_products_path %>";
+      jQuery.get(url, product_id.serialize(), function() {alert( "更新產品規格已完成" );});
+    }
+  }
+</script>
+
+

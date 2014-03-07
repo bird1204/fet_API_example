@@ -1,0 +1,2 @@
+module UiIndexs::SogiImagesHelper
+end

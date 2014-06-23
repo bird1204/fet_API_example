@@ -27,7 +27,7 @@
               <td><%=display[:spec_class_name]%></td>
               <td><%=display[:spec_name]%></td>
               <td><%= text_field_tag "#{display[:display_id]}",display[:display_name],size: 50%></td>
-              <td><%=display[:remark]%></td>
+              <td><%=display[:remark].html_safe%></td>
             </tr>
             <%end-%>
           </table>   

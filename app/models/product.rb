@@ -1,14 +1,14 @@
 class Product < ActiveRecord::Base
   # attr_accessible :title, :body
   #set_primary_key :product_id
-  has_many :features
-  has_many :product_spec_displays
+  has_many :features , :dependent => :destroy
+  has_many :product_spec_displays , :dependent => :destroy
   #has_many :product_images,:foreign_key => "imageable_id"
 
 
-  has_one :main_image, :as => :imageable, :class_name => "ProductImage", :conditions => { "product_images.categorized" => 1 } # 別名的寫法
-  has_many :big_official_image, :as => :imageable, :class_name => "ProductImage", :conditions => { 'product_images.categorized' => 3 }  
-  has_many :picture, :as => :imageable, :class_name => "ProductImage", :conditions => { 'product_images.categorized' => 4 }  
+  has_one :main_image, :as => :imageable, :class_name => "ProductImage", :conditions => { "product_images.categorized" => 1 } , :dependent => :destroy # 別名的寫法
+  has_many :big_official_image, :as => :imageable, :class_name => "ProductImage", :conditions => { 'product_images.categorized' => 3 } , :dependent => :destroy
+  has_many :picture, :as => :imageable, :class_name => "ProductImage", :conditions => { 'product_images.categorized' => 4 } , :dependent => :destroy
   
   accepts_nested_attributes_for :main_image
   accepts_nested_attributes_for :big_official_image

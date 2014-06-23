@@ -27,7 +27,7 @@ function reload(){
       </div>
         <table>
           <td><%= button_to t('activerecord.back_to_index'),ui_indexs_mains_path, :method =>:get  %></td>
-          <td><%= button_to t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product_type), :method =>:put  %></td>
+          <td><%= button_to t("activerecord.back_to_list"),search_ui_indexs_products_path(:product_type => @product.product_type), :method =>:put  %></td>
         </table>
     </center> 
   </body>

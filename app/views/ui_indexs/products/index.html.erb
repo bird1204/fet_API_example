@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1">
+<head id="Head">
   <title><%=t("label.fet_manegement")%></title>
 </head>
   <body>
+    <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+    <script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
     <center>
       <div>
         <table>
@@ -32,6 +34,7 @@
               <th scope="col" style="font-size:12px;width:150px;"><%=t("label.gems")%></th>
               <th scope="col" style="font-size:12px;width:100px;"><%=t("label.market_date")%></th>
               <th scope="col" style="font-size:12px;"><%=t("label.lateset_update")%></th>
+              <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
               <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
               <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
               <th scope="col">&nbsp;</th><th scope="col">&nbsp;</th>
@@ -64,11 +67,19 @@
                 <%else%>
                   <%= button_to "符合匯出條件", ui_indexs_product_put_in_next_XML_path(product), :method => :put , :disabled => true %>
                 <%end%>
+                <%if product.updated_at.to_date == @today%>
+                  <%= button_to "移出隔日XML清單", ui_indexs_product_cancel_from_next_XML_path(product), :method => :put , :disabled => false %>
+                <%else%>
+                  <%= button_to "已排除自隔日清單", ui_indexs_product_cancel_from_next_XML_path(product), :method => :put , :disabled => true %>
+                <%end%>
+              </td>
+              <td>
+                <%= button_to "刪除產品", ui_indexs_product_path(product), :method => :delete,:confirm => "確定刪除#{product.name}嗎" %>
               </td>
             </tr>
             <%end%>
           </table>
-          <%= will_paginate @products %>
+          <%= will_paginate(@products, :params => {:product_type => @products.first.product_type}) %>
         </div>
       </div>
     </center>

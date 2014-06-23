@@ -6,16 +6,22 @@
           <td><%= f.select :brand_id, @brand_list, :selected=>@product.brand_id %></td>
         </tr>
         <tr>
-          <td width="10%"><%=t("label.intro")%>:</td>
-          <td width="90%"><div><%= f.cktext_area :info, :id => "info",:ckeditor => {:toolbar => "full",:height => "400"} %></div></td>
+          <td width="15%"><%=t("label.intro")%>:</td>
+          <td width="85%"><div><%= f.cktext_area :info, :id => "info",:ckeditor => {:toolbar => "full",:height => "400"} %></div></td>
         </tr>
         <tr>
-         <td><%=t("label.reviews")%>:</td>
+         <td><%=t("label.reviews")%>:<br>(使用,分隔多篇文章)</td>
           <td>
-            <%= f.text_field :reviews, :class => 'reviews' %>
+            <%= f.text_field :reviews, :size => 125 ,:class => 'reviews' %>
             <span id="Label1" style="color:Red;"></span>
             <%= button_tag t("activerecord.reviews")%>
         　</td>
+        </tr>
+        <tr>
+          <td>文章標題:</td>
+          <td>
+            <%= f.text_field :title, :size => 125,:class => 'reviews',:placeholder => "單篇文章可不輸入標題" %> 
+          </td>
         </tr>          
         <tr>
           <td><%=t("label.market_date")%>:<br /><br /></td>

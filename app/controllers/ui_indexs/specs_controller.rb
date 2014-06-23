@@ -12,7 +12,8 @@ class UiIndexs::SpecsController < ApplicationController
             :spec_name => d.spec.name,
             :spec_class_name => spec_class.name,
             :display_name => d.name,
-            :remark => d.spec.remark
+            :remark => d.spec.remark,
+            :sort => d.spec.sort
           }
       end
     end
@@ -20,7 +21,7 @@ class UiIndexs::SpecsController < ApplicationController
     if @display_array.blank? 
       spec_class_id = ((@product.product_type == 3)? 9 : 10) if @product.product_type > 2
       Spec.where(:spec_class_id => spec_class_id).each do |spec_display|
-        ProductSpecDisplay.create(:spec_id => spec_display.spec_id,:product_id =>params[:id])
+        ProductSpecDisplay.create(:spec_class_id => spec_class_id,:spec_id => spec_display.spec_id,:product_id =>params[:id])
       end
       edit
     else

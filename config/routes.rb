@@ -81,6 +81,7 @@ Fet::Application.routes.draw do
     resources :features
     resources :mains
     resources :products do
+      put "cancel_from_next_XML"
       put "put_in_next_XML"
       get "search", :on => :collection
       put "search", :on => :collection

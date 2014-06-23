@@ -29,7 +29,7 @@ class UiIndexs::ProductsController < ApplicationController
   end
   
   def edit
-    if @product.product_type > 2
+    if @product.product_type > 2 and @product.product_type != 5
       @brand_list=create_brand_list(@product.product_type) 
     else
       s_brand=SBrand.select("id,name_normal").find_by_id(@product.brand_id)
@@ -41,18 +41,29 @@ class UiIndexs::ProductsController < ApplicationController
     end
   end
 
+  def destroy
+    product=Product.find_by_id(params[:id])
+    product_type = product.product_type
+    product.destroy #要用destroy , model的depends才會有用
+    redirect_to search_ui_indexs_products_path(:product_type => product_type)
+  end
+
   def put_in_next_XML
-    product=Product.find(params[:product_id])
+    product = Product.find(params[:product_id])
     product.touch
+    redirect_to search_ui_indexs_products_path(:product_type => product.product_type)
+  end
+
+  def cancel_from_next_XML
+    product = Product.find(params[:product_id])
+    product.updated_at = Time.now.yesterday
+    product.save!
     redirect_to search_ui_indexs_products_path(:product_type => product.product_type)
   end
 
   def update
     # 更新評測文章 -> :is_info_trans=>true && only update reviews
     # 保存 -> :is_info_trans=>true 
-
-
-
 
     if params[:commit].present?
       @product.update_attributes(params[:product],:is_info_trans => true)
@@ -153,6 +164,6 @@ class UiIndexs::ProductsController < ApplicationController
 
   protected
   def init_product
-    @product=Product.find_by_product_id(params[:id]) || Product.find_by_id(params[:id])
+    @product = Product.find_by_id(params[:id])
   end
 end

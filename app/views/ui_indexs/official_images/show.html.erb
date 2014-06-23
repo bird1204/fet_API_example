@@ -17,8 +17,8 @@
     function showBigImage(url){
       $("#bigImage").attr("src",url);
     }
-    function checkURLStaus(){
-      var urlStr=$("#image_1").attr("alt");
+    function checkURLStatus(){
+      var urlStr=$("#image_0").attr("alt");
       $("#msgBox").html("<br><b><font color='green'>YA!!!!沒有需要處理的檔案~~~~</font></b><br");
       for(i=0 ; i<=urlStr.length;i++){
         if(haveChinese(urlStr)){
@@ -31,7 +31,7 @@
     function uploading() {$("#msgBox").html("<br><b><font color='brown'>正在上傳檔案....</font></b><br");}
   </script>
 </head>
-<body onload="checkURLStaus()">
+<body onload="checkURLStatus()">
   <%= form_tag(new_ui_indexs_official_image_path(params[:id]), :method =>:get) do -%>
     <center>
       <%if params[:image_type] == "official"%>

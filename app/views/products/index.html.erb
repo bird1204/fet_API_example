@@ -30,11 +30,12 @@
             </tr>
           <% end -%>
             <tr>
-              <td><%= button_tag t("activerecord.import_spec_and_spec_class"),:onclick => "sync();"  ,:type => "button"%></td>
-              <td><%= button_tag "匯入所有圖片",:onclick => "import_all_image();"  ,:type => "button"%></td>
-              <td><%= button_tag "匯入所有產品",:onclick => "import_all_product();"  ,:type => "button"%></td>
+              <td><%#= button_tag t("activerecord.import_spec_and_spec_class"),:onclick => "sync();"  ,:type => "button"%></td>
+              <td><%#= button_tag "匯入所有圖片",:onclick => "import_all_image();"  ,:type => "button"%></td>
+              <td><%#= button_tag "匯入所有產品",:onclick => "import_all_product();"  ,:type => "button"%></td>  
+              <td><%#= button_tag "更新所有規格(解決未抓取內建記憶體問題用)",:onclick => "update_spec(true);"  ,:type => "button"%></td>  
             </tr>
-          </table> 
+          </table>
           <%= button_to t("activerecord.back_to_index"), products_path %>
         </div>
       </center>
@@ -55,7 +56,6 @@
     url = "<%= import_all_product_products_path %>";
     jQuery.get(url, function() {alert( "匯入所有產品已完成" );});
   }
-
 
   function import_all_image(){
     url = "<%= import_all_image_products_path %>";
@@ -109,12 +109,18 @@
     }
   }
 
-  function update_spec(){
-    var product_id=jQuery('#product_id')
-    if (check_present(product_id.val())){
+  function update_spec(isAllProuduct){
+    if (isAllProuduct){
+      alert("更新開始，完成時將跳出通知~")
       url = "<%= update_spec_products_path %>";
-      jQuery.get(url, product_id.serialize(), function() {alert( "更新產品規格已完成" );});
-    }
+      jQuery.get(url, "all", function() {alert( "更新產品規格已完成" );});
+    }else{
+      var product_id=jQuery('#product_id')
+      if (check_present(product_id.val())){
+        url = "<%= update_spec_products_path %>";
+        jQuery.get(url, product_id.serialize(), function() {alert( "更新產品規格已完成" );});
+      }    
+    };
   }
 </script>
 

@@ -4,6 +4,7 @@ class UiIndexs::OfficialImagesController < ApplicationController
   def show
     params[:format]=params[:id]
     @id=params[:format]
+    @product_type=Product.find_by_id(@id).product_type
     @image_urls=ProductImage.where("imageable_id = #{params[:id]} and categorized = #{@categorized}")
     redirect_to new_ui_indexs_official_image_path(params) if @image_urls.blank?
   end
@@ -38,12 +39,10 @@ class UiIndexs::OfficialImagesController < ApplicationController
 
   def upload
     product=Product.find(params[:format])
-    product.big_official_image.delete_all if product.big_official_image.present?
-    SProduct.find(product.product_id).s_product_image.where(:categorized => 2).each do |image|
-      product.big_official_image.new(:remote_file_url=>image.url_big,:imageable_id=>product.id)
-      product.save!
-      product.big_official_image.last.update_urls_success? if product.big_official_image.present? 
-    end
+    product.big_official_image.each do |old_image|
+      old_image.update_attributes(:remote_file_url=>old_image.url_big,:imageable_id=>product.id)
+      old_image.update_urls_success?
+    end if product.big_official_image.present?
     redirect_to :back
   end
 

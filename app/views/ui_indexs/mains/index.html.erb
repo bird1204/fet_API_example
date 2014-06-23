@@ -14,8 +14,10 @@
     <tr>
       <td><%= button_to t("label.mobiles"), search_ui_indexs_products_path(:product_type => 1), :method =>:put  %></td>
       <td><%= button_to t("label.pads"), search_ui_indexs_products_path(:product_type => 2), :method =>:put  %></td>
+       <td><%= button_to "穿戴裝置", search_ui_indexs_products_path(:product_type => 5), :method =>:put  %></td>
       <td><%= button_to t("label.NBs"), search_ui_indexs_products_path(:product_type => 3), :method =>:put  %></td>
       <td><%= button_to t("label.NICs"), search_ui_indexs_products_path(:product_type => 4), :method =>:put  %></td>
+      <td><%#= button_to "穿戴裝置", search_ui_indexs_products_path(:product_type => 5), :method =>:put  %></td>
     </tr>
   </table>
 </body>
